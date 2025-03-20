@@ -63,6 +63,6 @@ report=classification_report(y_test,y_pred)
 print(f"Accuracy: {accuracy}")
 print(f"Confusion Matrix: \n{accuracy}")
 print(f"Classification Report: \n{accuracy}")
-import pickle
-with open("face_recognition_model.pkl","wb") as f:
-    pickle.dump(knn,f)
+# import pickle
+# with open("face_recognition_model.pkl","wb") as f:
+#     pickle.dump(knn,f)
