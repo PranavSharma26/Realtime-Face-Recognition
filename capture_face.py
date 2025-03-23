@@ -1,74 +1,66 @@
 import cv2
 import os
 
-# Define dataset path
-dataset_path = "RealtimeDataset"
+def capture_face():
 
-# Get user name input
-user_name = input("Enter Name: ")
+    dataset_path = "RealtimeDataset"
 
-# Create user folder
-user_path = os.path.join(dataset_path, user_name)
-os.makedirs(user_path, exist_ok=True)
+    user_name = input("Enter Name: ")
 
-# Initialize webcam
-cap = cv2.VideoCapture(0)
+    user_path = os.path.join(dataset_path, user_name)
+    os.makedirs(user_path, exist_ok=True)
 
-# Load Haar Cascade for face detection
-face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+    cap = cv2.VideoCapture(0)
 
-print("Press 's' to start capturing images...")
+    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
-# Wait for user to start image capture
-while True:
-    ret, frame = cap.read()
-    if not ret:
-        print("Error: Couldn't access the camera.")
-        break
+    print("Press 's' to start capturing images...")
 
-    cv2.imshow("Press 's' to start", frame)
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            print("Error: Couldn't access the camera.")
+            break
 
-    key = cv2.waitKey(1) & 0xFF
-    if key == ord('s'): 
-        break
+        cv2.imshow("Press 's' to start", frame)
 
-cv2.destroyAllWindows()
+        key = cv2.waitKey(1) & 0xFF
+        if key == ord('s'): 
+            break
 
-# Image capture parameters
-image_count = 0
-max_count = 10
+    cv2.destroyAllWindows()
 
-print("Capturing images... Press 'q' to stop early.")
+    image_count = 0
+    max_count = 10
 
-# Start capturing images
-while image_count < max_count:
-    ret, frame = cap.read()
-    if not ret:
-        break
+    print("Capturing images... Press 'q' to stop early.")
 
-    # Convert to grayscale
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    while image_count < max_count:
+        ret, frame = cap.read()
+        if not ret:
+            break
 
-    # Apply face detection
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    for (x, y, w, h) in faces:
-        face_roi = gray[y:y+h, x:x+w]  # Extract face region
-        face_resized = cv2.resize(face_roi, (200, 200))  # Resize to 200x200
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
-        # Save the detected face
-        image_path = os.path.join(user_path, f"{image_count}.jpg")
-        cv2.imwrite(image_path, face_resized)
-        image_count += 1
+        for (x, y, w, h) in faces:
+            face_roi = gray[y:y+h, x:x+w] 
+            face_resized = cv2.resize(face_roi, (200, 200))
 
-    # Display the frame
-    cv2.namedWindow("Capturing Frames...", cv2.WINDOW_NORMAL)
-    cv2.setWindowProperty("Capturing Frames...", cv2.WND_PROP_TOPMOST, 1)
-    cv2.imshow("Capturing Frames...", frame)
+            image_path = os.path.join(user_path, f"{image_count}.jpg")
+            cv2.imwrite(image_path, face_resized)
+            image_count += 1
 
-    if cv2.waitKey(100) & 0xFF == ord('q'):
-        break
+        cv2.namedWindow("Capturing Frames...", cv2.WINDOW_NORMAL)
+        cv2.setWindowProperty("Capturing Frames...", cv2.WND_PROP_TOPMOST, 1)
+        cv2.imshow("Capturing Frames...", frame)
 
-cap.release()
-cv2.destroyAllWindows()
-print(f"Captured {image_count} images for {user_name}")
+        if cv2.waitKey(100) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+    print(f"Captured {image_count} images for {user_name}")
+
+# capture_face()
