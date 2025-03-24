@@ -76,15 +76,17 @@ def train_model():
 
     y_pred=knn.predict(X_test)
 
+    # print(y_pred)
+
     accuracy=accuracy_score(y_test,y_pred)
     confusion=confusion_matrix(y_test,y_pred)
     report=classification_report(y_test,y_pred)
 
     print(f"Accuracy: {accuracy}")
-    print(f"Confusion Matrix: \n{confusion}")
-    print(f"Classification Report: \n{report}")
+    # print(f"Confusion Matrix: \n{confusion}")
+    # print(f"Classification Report: \n{report}")
 
-    # with open("face_recognition_model.pkl","wb") as f:
-    #     pickle.dump(knn,f)
+    with open("./models/face_recognition_model.pkl","wb") as f:
+        pickle.dump(knn,f)
 
 # train_model()

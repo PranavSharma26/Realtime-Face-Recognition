@@ -1,10 +1,13 @@
 import cv2
-import os
+import matplotlib.pyplot as plt
+import numpy as np
+import pickle
 
 def recognize_face():
 
-    img_path="Testing Images\Profile.jpg"
-
+    img_path="Testing Images\PS1.jpg"
+    height=200
+    width=200
     X=[]
 
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
@@ -19,6 +22,15 @@ def recognize_face():
             flatten_img=face_resized.flatten()
             X.append(flatten_img)
     
-    return X
+    X=np.array(X)
+    
+    # plt.imshow(X.reshape(height,width), cmap="gray")
+    # plt.show()   
+
+    filename="./models/face_recognition_model.pkl"
+    model = pickle.load(open(filename,"rb"))
+
+    y_predict = model.predict(X)
+    print(f"Person is: {y_predict}")    
 
 # recognize_face()
