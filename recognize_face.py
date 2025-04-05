@@ -5,7 +5,7 @@ import pickle
 
 def recognize_face():
 
-    img_path="Testing Images\PS1.jpg"
+    img_path="Testing Images/PS1.jpg"
     height=200
     width=200
     X=[]
