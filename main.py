@@ -1,6 +1,8 @@
 import os
+import sys
 from capture_face import *
 from recognize_face import *
+sys.path.append(os.path.join(os.path.dirname(__file__), "models"))
 from train_model import *
 
 while True:

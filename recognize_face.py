@@ -22,6 +22,7 @@ def recognize_face():
             print("Error: Couldn't access the camera.")
             break
 
+        frame=cv2.flip(frame,1)
         cv2.imshow("Press 's' to start", frame)
 
         key = cv2.waitKey(1) & 0xFF

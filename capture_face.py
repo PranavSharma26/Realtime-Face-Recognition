@@ -1,5 +1,6 @@
 import cv2
 import os
+from augment_face import *
 
 def capture_face():
 
@@ -21,7 +22,7 @@ def capture_face():
         if not ret:
             print("Error: Couldn't access the camera.")
             break
-
+        frame=cv2.flip(frame,1)
         cv2.imshow("Press 's' to start", frame)
 
         key = cv2.waitKey(1) & 0xFF
@@ -39,7 +40,7 @@ def capture_face():
         ret, frame = cap.read()
         if not ret:
             break
-
+        frame=cv2.flip(frame,1)
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
@@ -48,8 +49,12 @@ def capture_face():
             face_roi = gray[y:y+h, x:x+w] 
             face_resized = cv2.resize(face_roi, (200, 200))
 
-            image_path = os.path.join(user_path, f"{image_count}.jpg")
-            cv2.imwrite(image_path, face_resized)
+            augmented_faces = augment_face(face_resized)
+
+            for idx, aug_img in enumerate(augmented_faces):
+                image_path = os.path.join(user_path, f"{image_count}_{idx}.jpg")
+                cv2.imwrite(image_path, aug_img)
+
             image_count += 1
 
         cv2.namedWindow("Capturing Frames...", cv2.WINDOW_NORMAL)
